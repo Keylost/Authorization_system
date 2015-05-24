@@ -20,12 +20,21 @@ Password: <input type="password" name="pass"/><br/>
 <?php
 
 ini_set('display_errors', 1);
-$login = 'admin';
-$passwd = '5700031f6bc1d32ab5a0df04708560138b33526e386073beabdfa9699ae1152e802f9712e9659b3b6e3c6f497e7a11c57b46ccd673051d1cffeb9f35936c6450'; // H6dW_kw852
-$salt = UYBw1t0b7HaVgJjv; //16 symbols salt
 
 if (isset($_POST['submit']))
 {
+include "include/db_connect.php"; //$db_conn - var to db connect
+include "include/secure.php"; //filter($str)
+
+$login = filter($_POST['login']);
+$query = "SELECT password,salt FROM users WHERE name='".$login."'" or die("Error in the consult.." . mysqli_error($db_conn)); //query
+$result = $db_conn->query($query); 
+if($row = mysqli_fetch_array($result)) //get first row from result or NULL
+{
+  $salt = $row["salt"];
+  $passwd = $row["password"];
+} 
+
 $hashed = $_POST['pass'].$salt;
 for($i=0; $i<2171; $i++)
 {
@@ -42,13 +51,12 @@ else
 	printf("Password or login incorrect");
 }
 
-/*
-$salt = substr(str_shuffle("./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345‌​6789"), 0, 16);
-*/
 }
 
-//printf("<br/>".$hashed);
 printf("<br/>admin<br/>H6dW_kw852");
 ?>
+
+<br/>
+<h3><a href="reg.php">Registration</a></h3>
 </body>
 </html>
