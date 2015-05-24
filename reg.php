@@ -63,5 +63,6 @@ if(!$result) //$result=true if success
 }
 
 ?>
+<h3><a href="in.php">Sign In</a></h3>
 </body>
 </html>
