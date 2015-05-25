@@ -34,13 +34,4 @@ else
 	printf("Password or login incorrect");
 }
 }
-
-if (isset($_REQUEST[session_name()])) session_start(); //session start(only if user logged in) required(php.ini): request_order = "GPC" (GET,POST,COOKIE)
-if (isset($_SESSION['user_id']) AND $_SESSION['ip'] == $_SERVER['REMOTE_ADDR']) return;
-else
-{
-	session_destroy();
-	//header("Location: http://".$_SERVER['HTTP_HOST']."/");
-	//exit;
-}
 ?>
