@@ -1,1 +1,1 @@
-<font color=red size=24><b>Нет обработчика для данного запроса</b></font>
+<font color=red size=24><b>Not Found!</b></font>

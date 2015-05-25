@@ -1,7 +1,3 @@
-<html>
-<head><title>Registration page</title>
-</head>
-<body>
 <script src="rollups/sha3.js"></script>
 <script language="JavaScript">
 function validForm(f) 
@@ -36,7 +32,7 @@ else
 Login:  <input type="text" name="login"/><br/>
 Password: <input type="password" name="pass"/><br/>
 Repeat password: <input type="password" name="pass2"/><br/>
-<input type="submit" value="Sign in" name="submit"/>
+<input type="submit" value="Submit" name="submit"/>
 </form>
 
 <?php
@@ -59,10 +55,7 @@ if(!$result) //$result=true if success
 {
   printf("This user already exist or db connect problem");
 } 
-
+else printf("<script language='JavaScript'>document.location.href = 'http://".$_SERVER['HTTP_HOST']."/';</script>");
 }
 
 ?>
-<h3><a href="in.php">Sign In</a></h3>
-</body>
-</html>
