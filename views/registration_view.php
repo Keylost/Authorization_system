@@ -22,6 +22,7 @@ else
         hash = CryptoJS.SHA3(hash);
         }
         f.pass.value = hash;
+		f.pass2.value = 0;
         f.submit(); //submit form
     }
 }
