@@ -1,3 +1,4 @@
+User already exist or db connect problem!
 <script language="JavaScript">
 function validForm(f) 
 {

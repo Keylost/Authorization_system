@@ -21,7 +21,7 @@
 <td border="1"><a href="/admin">Admin panel</a></td>
 </tr>
 </table>
-</h3>
+</h2>
     <?php include 'views/'.$content_view; ?>
 </body>
 </html>

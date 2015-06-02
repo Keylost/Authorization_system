@@ -1,0 +1,1 @@
+Error! <a href="/admin">back to admin panel</a>

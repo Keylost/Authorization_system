@@ -26,15 +26,6 @@ class Route
         $controller_name = 'controller_'.$controller_name;
         $action_name = 'action_'.$action_name;
 
-        // подцепляем файл с классом модели (файла модели может и не быть)
-
-        $model_file = strtolower($model_name).'.php';
-        $model_path = "models/".$model_file;
-        if(file_exists($model_path))
-        {
-            include "models/".$model_file;
-        }
-
         // подцепляем файл с классом контроллера
         $controller_file = strtolower($controller_name).'.php';
         $controller_path = "controllers/".$controller_file;
@@ -52,6 +43,16 @@ class Route
         $controller = new $controller_name;
         $action = $action_name;
         
+		// подцепляем файл с классом модели (файла модели может и не быть)
+        $model_file = strtolower($model_name).'.php';
+        $model_path = "models/".$model_file;
+        if(file_exists($model_path))
+        {
+            include "models/".$model_file;
+			$controller->model = new $model_name;
+        }
+		
+		
         if(method_exists($controller, $action))
         {
             // вызываем действие контроллера
