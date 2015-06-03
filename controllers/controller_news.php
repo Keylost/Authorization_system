@@ -1,15 +1,45 @@
 <?php
+require_once "/core/class_secure.php";
 class Controller_news extends Controller
 {
     function action_delete()
     {	
-	    include "./include/db_connect.php"; //$db_conn - var to db connect
-		$query = "SELECT * FROM groups WHERE id='".$_SESSION['group']."'" or die("Error in the consult.." . mysqli_error($db_conn)); //query
-		$result = $db_conn->query($query); 
-        if($row = mysqli_fetch_array($result)) //get first row from result or NULL
-        {
-           $delete = $row["delete"];
-        } 
+		$routes = explode('/', $_SERVER['REQUEST_URI']);
+		if(!empty($routes[3]))
+		{
+			$id = secure::filter($routes[3]);
+            $result = $this->model->get_author($id);
+			if($row = mysqli_fetch_array($result)) //get first row from result or NULL
+			{
+				$author = $row["author"];
+			}
+            if(secure::check_rights($author,'delete'))
+			{
+				if($this->model->delete_news($id))
+				{
+					$this->view->generate('delete_news_success_view.php','template_view.php');
+				    exit;
+				}
+				else
+				{
+					$this->view->generate('delete_news_fail_view.php','template_view.php');
+					exit;
+				}	
+			}
+            else
+			{
+				$this->view->generate('403_view.php','template_view.php');
+				exit;
+			}				
+			
+			$this->view->set_model($this->model);
+		}
+		else
+		{
+			$this->view->generate('404_view.php','template_view.php');
+			exit;
+		}
+		
 		if($delete) $this->view->generate('news_del_view.php','template_view.php');
         else $this->view->generate('403_view.php','template_view.php');
     }
