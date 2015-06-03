@@ -1,0 +1,1 @@
+Success! <a href="/">Main page</a>
