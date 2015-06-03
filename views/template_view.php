@@ -22,6 +22,16 @@
 </tr>
 </table>
 </h2>
-    <?php include 'views/'.$content_view; ?>
+
+<?php
+
+if (isset($_SESSION['user_id']))
+{	
+	include 'views/usermenu_view.php';
+}
+else include 'views/signmenu_view.php';
+include 'views/'.$content_view;
+
+?>
 </body>
 </html>
