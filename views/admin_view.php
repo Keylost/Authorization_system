@@ -1,5 +1,5 @@
 
-    <b>Users</b><br/><table border=1>
+    <b>Users</b><br/><table class="table table-hover">
 	<tr>
 	<td>Name</td><td>Group</td><td>Delete?</td><td>Save</td>
 	</tr>

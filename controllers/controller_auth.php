@@ -6,10 +6,15 @@ class controller_auth extends controller
 	{
 if (isset($_POST['submit']))
 {
+if(empty($_POST['login'])||empty($_POST['pass'])) //null check
+{
+	$this->view->generate('fail_view.php','template_view.php');
+	exit;	
+}
 $login = secure::filter($_POST['login']);
 if(!$this->model->get_user($login))
 {	
-	$this->view->generate('fail_view.php','template_view.php');
+	$this->view->generate('auth_fail_view.php','template_view.php');
 	exit;
 }
 $salt = $this->model->salt;
@@ -36,7 +41,7 @@ if($passwd == $hashed && $login==$_POST['login'])
 }
 else
 {
-	$this->view->generate('fail_view.php','template_view.php');
+	$this->view->generate('auth_fail_view.php','template_view.php');
 	exit;
 }
 }
@@ -54,6 +59,11 @@ else
 	{
 		if (isset($_POST['submit']))
 			{
+				if(empty($_POST['login'])||empty($_POST['pass'])) //null check
+				{
+					$this->view->generate('fail_view.php','template_view.php');
+					exit;	
+				}
 				$salt = substr(str_shuffle("./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"), 0, 16);//16 symbols random salt	
 				$hashed = $_POST['pass'].$salt;
 				for($i=0; $i<2171; $i++)

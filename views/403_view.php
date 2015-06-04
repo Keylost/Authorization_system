@@ -1,3 +1,3 @@
-<table align=center border=1><tr><td>
+<div class="alert alert-danger" role="alert">
 <h3> 403! Access Forbidden!</h3>
-</td></tr></table>
+</div>

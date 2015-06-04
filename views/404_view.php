@@ -1,1 +1,1 @@
-<font color=red size=24><b>Not Found!</b></font>
+<div class="alert alert-danger" role="alert"><b>Not Found!</b></div>

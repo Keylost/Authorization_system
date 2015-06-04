@@ -4,6 +4,12 @@ class Controller_admin extends Controller
 {
     function action_index()
     {
+	if(!secure::check_rights(-1,'admin')) //check_rights
+	{
+		$this->view->generate('403_view.php','template_view.php');				
+		exit;
+	}
+	
     $this->view->set_model($this->model);		
     if (isset($_POST['submit']))
     {

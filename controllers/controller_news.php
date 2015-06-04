@@ -7,9 +7,9 @@ class Controller_news extends Controller
 		$routes = explode('/', $_SERVER['REQUEST_URI']);
 		if(isset($_POST['submit']))
 		{
-			if(empty($_POST['name']) || empty($_POST['short']) || empty($_POST['full']) || empty($_POST['id']))
+			if(empty($_POST['name']) || empty($_POST['short']) || empty($_POST['full']) || empty($_POST['id'])) //null check
 			{				
-				$this->view->generate('403_view.php','template_view.php');				
+				$this->view->generate('fail_view.php','template_view.php');				
 				exit;
 			}
 			$id = secure::filter($_POST['id']);
@@ -85,8 +85,6 @@ class Controller_news extends Controller
 				$this->view->generate('403_view.php','template_view.php');
 				exit;
 			}				
-			
-			//$this->view->set_model($this->model);
 		}
 		else
 		{
@@ -105,8 +103,18 @@ class Controller_news extends Controller
 	{
 		if (isset($_POST['submit']))
 		{
+			if(empty($_POST['name']) || empty($_POST['short']) || empty($_POST['full'])) //null check
+			{				
+				$this->view->generate('fail_view.php','template_view.php');				
+				exit;
+			}
 			$name = secure::filter($_POST['name']);
 			$author=$_SESSION['user_id'];
+			if(!secure::check_rights($author,'add_news')) //check_rights
+			{
+				$this->view->generate('fail_view.php','template_view.php');				
+				exit;
+			}
 			$short_content = secure::filter($_POST['short']);
 			$content = secure::filter($_POST['full']);
 			if($this->model->add_news($author,$name,$short_content,$content))
