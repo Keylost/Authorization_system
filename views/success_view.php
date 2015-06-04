@@ -1,1 +1,3 @@
-Success! <a href="/admin">back to admin panel</a>
+<div class="alert alert-success" role="alert">
+Success!
+</div>

@@ -1,1 +1,3 @@
-Error! <a href="/admin">back to admin panel</a>
+<div class="alert alert-danger" role="alert">
+Critical Error!
+</div>

@@ -9,7 +9,7 @@ if (isset($_POST['submit']))
 $login = secure::filter($_POST['login']);
 if(!$this->model->get_user($login))
 {	
-	$this->view->generate('auth_fail_view.php','template_view.php');
+	$this->view->generate('fail_view.php','template_view.php');
 	exit;
 }
 $salt = $this->model->salt;
@@ -36,7 +36,7 @@ if($passwd == $hashed && $login==$_POST['login'])
 }
 else
 {
-	$this->view->generate('auth_fail_view.php','template_view.php');
+	$this->view->generate('fail_view.php','template_view.php');
 	exit;
 }
 }
@@ -61,15 +61,14 @@ else
 					$hashed = hash('sha512', $hashed);
 				}
 				$login = secure::filter($_POST['login']);
-                $result = $this->model->add_user($login,$hashed,$salt);
-				if(!$result) //$result=true if success
+				if(!$this->model->add_user($login,$hashed,$salt)) //$result=true if success
 				{
-					$this->view->generate('registration_fail_view.php','template_view.php');
+					$this->view->generate('fail_view.php','template_view.php');
 					exit;
 				} 
 				else
 				{
-					$this->view->generate('registration_success_view.php','template_view.php');
+					$this->view->generate('success_view.php','template_view.php');
 					exit;
 				}
 			}

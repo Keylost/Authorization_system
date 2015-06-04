@@ -1,4 +1,9 @@
-		<div style="position:absolute;right:180px;top:20px;border:solid 1px black;">
-		Hi, <?php printf($_SESSION['login']); ?> <(*_*)><br/>
-		<a href="/auth/signout">Sign Out</a>
-		</div>
+	<div class="container-fluid">
+	<div class="navbar-collapse collapse">
+	<div class="navbar-brand navbar-right">
+        Hi, <?php printf($_SESSION['login']); ?> <(*_*)>
+		<a class="btn btn-danger btn-sm" href="/auth/signout" role="button">Sign Out</a>
+    </div>
+	</div>
+	</div>
+	

@@ -1,1 +1,0 @@
-Error! <a href="/">Main page</a>

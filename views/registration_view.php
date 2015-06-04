@@ -21,9 +21,19 @@ else
 }
 </script>
 
-<form method="post" onSubmit="validForm(this); return false;">
-Login:  <input type="text" name="login"/><br/>
-Password: <input type="password" name="pass"/><br/>
-Repeat password: <input type="password" name="pass2"/><br/>
-<input type="submit" value="Submit" name="submit"/>
+<form method="post" onSubmit="validForm(this); return false;" role="form" id="reg">
+  <div class="form-group">
+    <label for="login">Login:</label>
+    <input type="text" class="form-control" id="login" name="login"/>
+  </div>
+  <div class="form-group">
+    <label for="pwd">Password:</label>
+    <input type="password" class="form-control" id="pwd" name="pass"/>
+  </div>
+    <div class="form-group">
+    <label for="pwd2">Repeat Password:</label>
+    <input type="password" class="form-control" id="pwd2" name="pass2"/>
+  </div>
+<button type="submit" class="btn btn-default" name="submit" form="reg">Submit</button>
+
 </form>

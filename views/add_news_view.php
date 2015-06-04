@@ -1,8 +1,15 @@
-<form method="post">
-Name:  <input type="text" name="name"/><br/>
-Short description: <br/>
-<textarea name="short" cols="40" rows="3"></textarea><br/>
-Full:<br/>
-<textarea name="full" cols="40" rows="3"></textarea><br/>
-<input type="submit" value="Submit" name="submit"/>
+<form method="post" role="form" id="add">
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" class="form-control" id="name" name="name"/>
+  </div>
+  <div class="form-group">
+    <label for="short">Short description:</label>
+    <textarea type="text" class="form-control" id="short" name="short"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="full">Full:</label>
+    <textarea type="text" class="form-control" id="full" name="full"></textarea>
+  </div>
+<button type="submit" class="btn btn-default" name="submit" form="add">Submit</button>
 </form>

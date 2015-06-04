@@ -28,14 +28,16 @@
         <?php if($_SESSION['group']==1) printf('<li><a href="/admin">Admin panel</a></li>'); ?>
 		<li><a href="/about">About</a></li>
     </ul>
+	<?php
+	if (isset($_SESSION['user_id']))
+	{	
+		include 'views/usermenu_view.php';
+	}
+	else include 'views/signmenu_view.php';
+	?>
 </nav>
 <?php
 
-if (isset($_SESSION['user_id']))
-{	
-	include 'views/usermenu_view.php';
-}
-else include 'views/signmenu_view.php';
 include 'views/'.$content_view;
 
 ?>
