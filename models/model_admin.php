@@ -1,41 +1,82 @@
  <?php
-
+require_once '/core/class_secure.php';
  class model_admin extends model
  {
 public $groups = array();
  
  function get_users()
  {
-	include '/core/db_connect.php'; //$db_conn - var to db connect
-	$query = "SELECT users.id as uid, users.name as uname, groups.name as gname, groups.id as gid FROM users inner join groups on users.group=groups.id" or die("Error in the consult.." . mysqli_error($db_conn)); //query
-	$result = $db_conn->query($query);
-	return $result;
+	$sql = "SELECT users.id, users.name, groups.name, groups.id FROM users inner join groups on users.group=groups.id;";
+	$db_conn = $this->db_connect();
+	if ($stmt = $db_conn->prepare($sql)) 
+	{			
+		$stmt->execute();
+		return $stmt;
+	}
+	else 
+	{
+		$this->err_msg="db query error";
+		return false;
+	}
  }
  
  function get_grouplist()
  {
-	include '/core/db_connect.php'; //$db_conn - var to db connect
-	$query = "SELECT groups.id as gid, groups.name as gname FROM groups" or die("Error in the consult.." . mysqli_error($db_conn)); //query
-	$groupslist = $db_conn->query($query);
-	while($row2 = mysqli_fetch_array($groupslist))
+	$db_conn = $this->db_connect();
+	$sql = "SELECT groups.id, groups.name FROM groups;"; //query
+	if ($stmt = $db_conn->prepare($sql)) 
+	{			
+		$stmt->execute();
+		$stmt->bind_result($id,$name);
+		while($stmt->fetch())
+		{
+			$this->groups[$id] = $name;		
+		}
+		$stmt->close();
+	}
+	else 
 	{
-		$this->groups["$row2[gid]"] = $row2[gname];
+		$this->err_msg="db query error";
+		return false;
 	}
  }
 
 function delete_user($id)
 {
-	include '/core/db_connect.php'; //$db_conn - var to db connect
-	$query = 'delete from users where id="'.$id.'"' or die("Error in the consult.." . mysqli_error($db_conn));
-	if(!$db_conn->query($query)) return false;
-	else return true;
+	$id = secure::filter($_POST['uid']);
+	$db_conn = $this->db_connect();
+	$sql = 'delete from users where id=?;';
+	if ($stmt = $db_conn->prepare($sql)) 
+	{			
+		$result = $stmt->execute();
+		$stmt->close();
+		return $result;
+	}
+	else 
+	{
+		$this->err_msg="db query error";
+		return false;
+	}
 }
 function update_user($uname,$group,$id)
 {
-	include '/core/db_connect.php'; //$db_conn - var to db connect	
-	$query = 'update users set users.name="'.$uname.'", users.group="'.$group.'" where id="'.$id.'"' or die("Error in the consult.." . mysqli_error($db_conn));
-	if(!$db_conn->query($query)) return false;
-	else return true;
+	$uname=secure::filter($uname);
+	$group=intval($group);
+	$id=intval($id);
+	$sql = 'update users set users.name=?, users.group=? where id=?;';
+	$db_conn = $this->db_connect();
+	if ($stmt = $db_conn->prepare($sql)) 
+	{			
+		$stmt->bind_param('sii',$uname,$group,$id);
+		$result = $stmt->execute();
+		$stmt->close();
+		return $result;
+	}
+	else 
+	{
+		$this->err_msg="db query error";
+		return false;
+	}
 }
  }
 ?>

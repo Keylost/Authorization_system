@@ -4,24 +4,25 @@
 	<td>Name</td><td>Group</td><td>Delete?</td><td>Save</td>
 	</tr>
 	<?php
-	$result = $this->model->get_users();
 	$this->model->get_grouplist();
-    while($row = mysqli_fetch_array($result))
+	$result = $this->model->get_users();
+	$result->bind_result($uid,$uname,$gname,$gid);	
+    while($result->fetch())
     {
         
 		printf('
 		<tr>
 		<form method="post">
 		<td>
-		<input type="text" hidden name="uid" value="'.$row["uid"].'"/>
-		<input type="text" name="uname" value="'.$row["uname"].'"/>
+		<input type="text" hidden name="uid" value="'.$uid.'"/>
+		<input type="text" name="uname" value="'.$uname.'"/>
 		</td>
 		<td>
 		<p><select name="group">
 		');
         foreach($this->model->groups as $key => $value)
         {
-           if($key==$row[gid]) printf('<option selected value="'.$key.'">'.$value.'</option>');
+           if($key==$gid) printf('<option selected value="'.$key.'">'.$value.'</option>');
 		   else printf('<option value="'.$key.'">'.$value.'</option>');
         }
 printf('		
@@ -39,4 +40,4 @@ printf('
 			}
 		?>
 	</table>
-		
+		<?php include '/views/fail_view.php'; // error check ?>

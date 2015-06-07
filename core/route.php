@@ -50,6 +50,7 @@ class Route
         {
             include "models/".$model_file;
 			$controller->model = new $model_name;
+			$controller->view->model = $controller->model;
         }
 		
 		

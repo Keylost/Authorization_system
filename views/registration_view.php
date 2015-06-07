@@ -1,33 +1,11 @@
-<script language="JavaScript">
-function validForm(f) 
-{
-if (f.pass.value != f.pass2.value) 
-{
-alert("Passwords don't match!");
-return false;
-}
-else
-{
-	if(f.login.value.length<3 || f.pass.value.length<8)
-	{
-		alert('Password or login are too short!');
-		return false;
-	}
-	else
-	{
-        f.submit(); //submit form
-    }
-}
-}
-</script>
-
-<form method="post" onSubmit="validForm(this); return false;" role="form" id="reg">
+<?php include '/views/fail_view.php'; ?>
+<form method="post" role="form" id="reg">
   <div class="form-group">
-    <label for="login">Login:</label>
+    <label for="login">Login:(min lenght: 3 symbols, max:20)</label>
     <input type="text" class="form-control" id="login" name="login"/>
   </div>
   <div class="form-group">
-    <label for="pwd">Password:</label>
+    <label for="pwd">Password:(min lenght: 8 symbols, max:20)</label>
     <input type="password" class="form-control" id="pwd" name="pass"/>
   </div>
     <div class="form-group">

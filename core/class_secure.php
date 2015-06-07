@@ -3,20 +3,46 @@ class secure
 {
 static function filter($str) //filter function
 {
+$orig = $str;
+
 $str = strip_tags($str);	
 $str = htmlspecialchars($str);
 $str = mysql_escape_string($str);
-return $str;	
+if($orig==$str) return $str;
+else
+{
+	require_once '/core/view.php';
+	require_once '/core/model.php';
+	$mdl = new model();
+	$view = new view();
+	$view->model = $mdl;
+	$mdl->err_msg="Forbidden symbols detected!";
+	$view->generate('fail_view.php','template_view.php');
+	exit;
+}	
 }
 static function check_rights($author_id,$action)
 {
-	include "/core/db_connect.php"; //$db_conn - var to db connect
+	require_once '/core/model.php';
+	$mdl = new model();
+	$db_conn = $mdl->db_connect();
+
 	$group = 4;
 	if(isset($_SESSION['group'])) $group = $_SESSION['group'];
 	
-	$query = "SELECT * FROM groups WHERE id='".$group."'" or die("Error in the consult.." . mysqli_error($db_conn)); //query
-	$result = $db_conn->query($query);
-
+	$sql = "SELECT * FROM groups WHERE id=?;"; //query
+	if ($stmt = $db_conn->prepare($sql)) 
+	{
+		$stmt->bind_param('i', $group);				
+		$stmt->execute();
+	}
+	else 
+	{
+		return false;
+	}
+	
+	$result = $stmt->get_result();
+    
 	if($row = mysqli_fetch_array($result))
 	{
 		if($action=='add_news') 
