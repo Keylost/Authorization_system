@@ -70,8 +70,10 @@ else
 	
 	function action_signout()
 	{
-		session_start();
-		session_destroy();
+		$mdl = new model();
+		$session = new db_session($mdl->db_connect());
+		$session->forget($_COOKIE['session_id']);
+		setcookie('session_id', $_COOKIE['session_id'], time()-3600,'/'); 
 		header("Location: http://".$_SERVER['HTTP_HOST']."/");
 		exit;
 	}

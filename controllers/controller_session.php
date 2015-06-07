@@ -56,6 +56,17 @@ class db_session
 		}
 
     }
+	
+	public function forget($token)
+	{
+		$sql = 'DELETE FROM sessions where token=?;';
+		if($stmt = $this->db->prepare($sql))
+		{
+			$stmt->bind_param('s',$token);
+			$stmt->execute();
+			$stmt->close();
+		}
+	}
  
     private function generate_token()
     {
