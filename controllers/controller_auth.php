@@ -106,7 +106,7 @@ else
 					$this->view->generate('registration_view.php','template_view.php');
 					exit;					
 				}
-				$salt = substr(str_shuffle("./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"), 0, 16);//16 symbols random salt	
+				$salt = $this->generate_salt();
 				$hashed = $_POST['pass'].$salt;
 				for($i=0; $i<2171; $i++)
 				{
@@ -131,6 +131,12 @@ else
 			exit;
 		}
 	}
+
+	function generate_salt()
+	{
+    $salt = openssl_random_pseudo_bytes(20, $cstrong);
+    return $salt;
+  }
 }
 
 ?>

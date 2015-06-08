@@ -26,7 +26,7 @@ class db_session
     public function remember($user_id, $expire = null)
     {
         $sql = 'INSERT INTO sessions (token, user_id, expire) VALUES (?, ?, ?)';
-        $token = $this->generate_token();
+        $token = $this->generate_token($user_id,$expire);
         if($stmt = $this->db->prepare($sql))
 		{
 			$stmt->bind_param('sis',$token,$user_id,$expire);
@@ -68,9 +68,16 @@ class db_session
 		}
 	}
  
-    private function generate_token()
+    private function generate_token($user_id,$expire)
     {
-        return md5(uniqid('', true));
-    }
+		$randbytes = openssl_random_pseudo_bytes(32, $cstrong);
+		$token = $expire.$randbytes.$user_id;
+		for($i=0; $i<10; $i++)
+		{
+			$token = hash('sha512', $token);
+		}
+		
+		return $token;
+  }
 } 
 ?>
