@@ -136,7 +136,7 @@ else
 	{
     $salt = openssl_random_pseudo_bytes(20, $cstrong);
     return $salt;
-  }
+	}
 }
 
 ?>
