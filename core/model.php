@@ -1,7 +1,8 @@
 <?php //базовый класс модели. гетдата должен быть перекрыт в потомках
 class Model
 {
-	public $err_msg;
+	public $msg_type; //error,success
+	public $msg; //message
 	private $db; //mysqli connection descriptor
 	
 	public function db_connect()

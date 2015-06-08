@@ -4,6 +4,7 @@ class Controller_news extends Controller
 {
 	function action_edit()
 	{
+		$action = 'edit';
 		if(isset($_POST['nid']))
 		{
 			$id = $_POST['nid'];
@@ -14,12 +15,11 @@ class Controller_news extends Controller
 			}
 			if($result = $this->model->get_author($id)) //get first row from result or NULL
 			{
-				$author = $result;
+				if($result==$_SESSION['user_id']) $action=$action.'_if_author';
 			}
 		}
-		if(!secure::check_rights($author,'edit'))
+		if(!secure::check_rights($action))
 		{
-			echo $author;
 			$this->view->generate('403_view.php','template_view.php');		
 			exit;				
 		}
@@ -54,7 +54,8 @@ class Controller_news extends Controller
 	}
     function action_delete()
     {
-		if(isset($_POST['id']))
+		$action = 'delete';
+		if(isset($_POST['nid']))
 		{
 			$id = $_POST['nid'];
 			if(empty($id))
@@ -64,14 +65,39 @@ class Controller_news extends Controller
 			}
 			if($result = $this->model->get_author($id)) //get first row from result or NULL
 			{
-				$author = $result;
+				if($result==$_SESSION['user_id']) $action=$action.'_if_author';
 			}
-
-			if(!secure::check_rights($author,'delete'))
+		}
+		if(!secure::check_rights($action))
+		{
+			$this->view->generate('403_view.php','template_view.php');		
+			exit;				
+		}
+		$this->model->news_id = $id;
+		$this->view->generate('newsdelete_view.php','template_view.php');			
+    }
+	
+	function action_delconfirmed()
+	{
+		$action = 'delete';
+		if(isset($_POST['cdelete']))
+		{
+			$id = $_POST['nid'];
+			if(empty($id))
 			{
-				$this->view->generate('403_view.php','template_view.php');
+				$this->view->generate('404_view.php','template_view.php');
 				exit;
 			}
+			if($result = $this->model->get_author($id)) //get first row from result or NULL
+			{
+				if($result==$_SESSION['user_id']) $action=$action.'_if_author';
+			}
+		}
+		if(!secure::check_rights($action))
+		{
+			$this->view->generate('403_view.php','template_view.php');		
+			exit;				
+		}
 			if($this->model->delete_news($id))
 			{
 				$this->view->generate('success_view.php','template_view.php');
@@ -81,14 +107,8 @@ class Controller_news extends Controller
 			{
 				$this->view->generate('fail_view.php','template_view.php');
 				exit;
-			}				
-		}
-		else
-		{
-			$this->view->generate('404_view.php','template_view.php');
-			exit;
-		}
-    }
+			}		
+	}
 
 	function action_index()
 	{		
@@ -97,9 +117,7 @@ class Controller_news extends Controller
 	}
 	function action_add()
 	{
-		$author = -1;
-		if(!empty($_SESSION['user_id'])) $author=$_SESSION['user_id'];
-		if(!secure::check_rights($author,'add_news')) //check_rights
+		if(!secure::check_rights('add_news')) //check_rights
 		{
 			$this->view->generate('403_view.php','template_view.php');				
 			exit;
@@ -113,7 +131,7 @@ class Controller_news extends Controller
 				exit;
 			}
 						
-			if($this->model->add_news($author,$_POST['name'],$_POST['short'],$_POST['full']))
+			if($this->model->add_news($_SESSION['user_id'],$_POST['name'],$_POST['short'],$_POST['full']))
 			{
 				$this->view->generate('success_view.php','template_view.php');
 				exit;
@@ -131,14 +149,10 @@ class Controller_news extends Controller
 	}
 	function action_full()
 	{
-		if(isset($_POST['id']))
+		$routes = explode('/', $_SERVER['REQUEST_URI']);
+		if(!empty($routes[3]))
 		{
-			$id = $_POST['nid'];
-			if(empty($id))
-			{
-				$this->view->generate('404_view.php','template_view.php');
-				exit;
-			}			
+			$id = $routes[3];		
 			$this->model->news_id = $id;
 			$this->view->generate('full_news_view.php','template_view.php');
 			exit;

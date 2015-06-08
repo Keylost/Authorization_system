@@ -13,10 +13,7 @@ printf('
 	<hr>
 	<b>Author:</b> '.$author_name.'<br/>
 	<div class="btn-group btn-group-xs">
-	<form method="post" action="/news/full" class="btn-group btn-group-xs">
-	<input type="text" name="nid" value="'.$news_id.'" hidden/>
-	<button type="submit" class="btn btn-success" name="id" role="button">Read</a>
-	</form>
+	<a class="btn btn-success" role="button" href="/news/full/'.$news_id.'">Read</a>
 	');
 	if($_SESSION['group']==1 || $_SESSION['user_id']==$author_id)
 	{

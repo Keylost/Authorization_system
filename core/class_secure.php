@@ -21,7 +21,7 @@ else
 	exit;
 }	
 }
-static function check_rights($author_id,$action)
+static function check_rights($action)
 {
 	require_once '/core/model.php';
 	$mdl = new model();
@@ -29,41 +29,22 @@ static function check_rights($author_id,$action)
 
 	$group = 4;
 	if(isset($_SESSION['group'])) $group = $_SESSION['group'];
-	
-	$sql = "SELECT * FROM groups WHERE id=?;"; //query
+	$sql = "SELECT permissions.access FROM permissions inner join actions on actions.id=permissions.action_id WHERE (permissions.group_id=? and actions.action=?);"; //query
 	if ($stmt = $db_conn->prepare($sql)) 
 	{
-		$stmt->bind_param('i', $group);				
+		$stmt->bind_param('is', $group,$action);				
 		$stmt->execute();
 	}
 	else 
 	{
+		echo $stmt->errno;
 		return false;
 	}
-	
-	$result = $stmt->get_result();
-    
-	if($row = mysqli_fetch_array($result))
-	{
-		if($action=='add_news') 
-		{
-			if($row['add_news']) return true;
-			else return false;
-		}
-		if($action=='admin') 
-		{
-			if($row['admin']) return true;
-			else return false;
-		}
-		if($_SESSION['user_id']==$author_id) $action=$action.'_their';
-		else $action=$action.'_all';
-		if($row[$action]) return true;
-		else return false;
-	}
-	else
-	{
-		return false;
-	}
+	$stmt->bind_result($access);
+	$stmt->fetch();
+    $stmt->close();
+	$mdl->db_disconnect();
+	return $access;	
 }
 }
 ?>
