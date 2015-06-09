@@ -18,14 +18,14 @@ class model_user extends model
 		}
 		return false;
 	}
-	public function update($id,$hashed,$salt)
+	public function update($id,$hashed,$salt,$email)
 	{
 		$id = intval($id);
 		$db_conn = $this->db_connect();
 		$sql = 'update users set users.password=?,users.salt=? where users.id=?';
 		if($stmt=$db_conn->prepare($sql))
 		{
-			$stmt->bind_param('ssi',$hashed,$salt,$id);
+			$stmt->bind_param('ssi',$hashed,$salt,$id,$email);
 			$res = $stmt->execute();
 			$stmt->close();
 			return 	$res;

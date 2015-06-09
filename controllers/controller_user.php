@@ -79,7 +79,7 @@ class controller_user extends controller
 			}
 		}
 	}
-	function generate_salt()
+	private function generate_salt()
 	{
 		$salt = openssl_random_pseudo_bytes(20, $cstrong);
 		return $salt;

@@ -13,8 +13,8 @@
     <input type="password" class="form-control" id="pwd2" name="pass2"/>
   </div>
   <div class="form-group">
-    <label for="phn">Mobile phone number(example: 7962XXXXX20):</label>
-    <input type="text" class="form-control" id="phn" name="phone"/>
+    <label for="ml">Email:</label>
+    <input type="text" class="form-control" id="ml" name="mail"/>
   </div>
 <button type="submit" class="btn btn-default" name="submit" form="reg">Submit</button>
 </form>

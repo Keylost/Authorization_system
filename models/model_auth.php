@@ -33,14 +33,14 @@ if($stmt->fetch()) //get first row from result or NULL
 else return false; 
 }
 
-	function add_user($login,$pass,$salt)
+	function add_user($login,$pass,$salt,$email)
 	{	
 		$login = secure::filter($login);
 		$db_conn = $this->db_connect();
-		$sql = "INSERT INTO users VALUES ('', ?, ?, DEFAULT, ?);"; //query
+		$sql = "INSERT INTO users VALUES ('', ?, ?, DEFAULT, ?,?);"; //query
 		if ($stmt = $db_conn->prepare($sql)) 
 		{
-			$stmt->bind_param('sss', $login,$pass,$salt);				
+			$stmt->bind_param('ssss', $login,$pass,$salt,$email);				
 			$result = $stmt->execute();
 			$stmt->close();
 			return $result;

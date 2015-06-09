@@ -39,8 +39,7 @@ for($i=0; $i<2171; $i++)
 //if(hash_equals($passwd,$hashed)) //minimum required: php 5.6 Timing attack safe string comparison
 if($passwd == $hashed && $login==$_POST['login'])
 {
-	$mdl = new model();
-	$session = new db_session($mdl->db_connect());
+	$session = new controller_session();
 	if(isset($_POST['save'])) //remember
 	{
 		$session->remember($id,1);
@@ -63,8 +62,7 @@ else
 	
 	function action_signout()
 	{
-		$mdl = new model();
-		$session = new db_session($mdl->db_connect());
+		$session = new controller_session();
 		$session->forget($_COOKIE['session_id']);
 		setcookie('session_id', $_COOKIE['session_id'], time()-3600,'/'); 
 		header("Location: http://".$_SERVER['HTTP_HOST']."/");
@@ -73,8 +71,7 @@ else
 	
 	function action_massignout()
 	{
-		$mdl = new model();
-		$session = new db_session($mdl->db_connect());
+		$session = new controller_session();
 		$session->forget_all($_SESSION['user_id']);
 		setcookie('session_id', $_COOKIE['session_id'], time()-3600,'/'); 
 		header("Location: http://".$_SERVER['HTTP_HOST']."/");
@@ -85,13 +82,12 @@ else
 	{
 		if (isset($_POST['submit']))
 			{
-				if(empty($_POST['login'])||empty($_POST['pass'])||empty($_POST['pass2'])||empty($_POST['phone'])) //null check
+				if(empty($_POST['login'])||empty($_POST['pass'])||empty($_POST['pass2'])||empty($_POST['mail'])) //null check
 				{
 					$this->model->err_msg = 'All fields are required!';
 					$this->view->generate('registration_view.php','template_view.php');
 					exit;	
 				}
-				$plen = strlen($_POST['phone']);
 				$paslen = strlen($_POST['pass']);
 				$loglen = strlen($_POST['login']);
 				if($paslen<8||$loglen<3)
@@ -106,12 +102,13 @@ else
 					$this->view->generate('registration_view.php','template_view.php');
 					exit;					
 				}
-				if($plen!=11)
+				if(!$this->mail_check($_POST['mail']))
 				{
-					$this->model->err_msg = 'Phone number incorrect!';
+					$this->model->err_msg = 'Incorrect email address!';
 					$this->view->generate('registration_view.php','template_view.php');
-					exit;
+					exit;	
 				}
+
 				if($_POST['pass']!=$_POST['pass2'])
 				{
 					$this->model->err_msg = 'Passwords don\'t match!';
@@ -124,10 +121,11 @@ else
 				{
 					$hashed = hash('sha512', $hashed);
 				}
+				
 				$login = secure::filter($_POST['login']);
-				if(!$this->model->add_user($login,$hashed,$salt)) //$result=true if success
+				if(!$this->model->add_user($login,$hashed,$salt,$_POST['mail'])) //$result=true if success
 				{
-					$this->model->err_msg = 'User already exist!';
+					$this->model->err_msg = 'Error user creating!';
 					$this->view->generate('registration_view.php','template_view.php');
 					exit;
 				} 
@@ -144,11 +142,23 @@ else
 		}
 	}
 
-	function generate_salt()
+	private function generate_salt()
 	{
     $salt = openssl_random_pseudo_bytes(20, $cstrong);
     return $salt;
 	}
+	private function mail_check($mail)
+	{
+		$email=mysql_real_escape_string($mail);
+		// regular expression for email check
+		$regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/';
+		if(preg_match($regex, $email))
+		{
+			return true;
+		}
+		else return false;
+	}
+	
 }
 
 ?>
