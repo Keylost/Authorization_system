@@ -1,8 +1,8 @@
 <?php
-include '/views/fail_view.php'; // error check
 
 $result=$this->model->get_full($this->model->news_id);
 $result->bind_result($author_id,$author_name,$news_id,$news_name,$news_full,$news_short);/* result->variable */
+include '/views/fail_view.php'; // error check
 if($result->fetch())
 {
 printf('

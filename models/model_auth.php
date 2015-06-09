@@ -33,6 +33,23 @@ if($stmt->fetch()) //get first row from result or NULL
 else return false; 
 }
 
+function check_mail($email)
+{
+	$db_conn = $this->db_connect();
+	$sql = "SELECT count(*) from users where mail=?;"; //query
+	if ($stmt = $db_conn->prepare($sql)) 
+	{
+		$stmt->bind_param('s', $email);				
+		$stmt->execute();
+		$stmt->bind_result($count);
+		$stmt->fetch();
+		$result=true;
+		if($count!=1) $result=false;
+		$stmt->close();
+		return $result;
+	}	
+}
+
 	function add_user($login,$pass,$salt,$email)
 	{	
 		$login = secure::filter($login);

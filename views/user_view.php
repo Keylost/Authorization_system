@@ -22,3 +22,15 @@ include '/views/fail_view.php';
 <button type="submit" class="btn btn-default" name="cnpwd" form="reg">Change Password</button>
 </form>
 </div>
+<hr/>
+<div class="h2">Change Email</div>
+<div style="border-width: 1px; border-style: solid;">
+<form method="post" role="form" id="cmail" action="/user/changemail">
+    <div class="form-group">
+    <label for="ml">New Email:</label>
+    <input type="text" class="form-control" id="ml" name="mail"/>
+  </div>
+<button type="submit" class="btn btn-default" name="cnmail" form="cmail">Change Email</button>
+</form>
+
+</div>

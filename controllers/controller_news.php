@@ -20,7 +20,8 @@ class Controller_news extends Controller
 		}
 		if(!secure::check_rights($action))
 		{
-			$this->view->generate('403_view.php','template_view.php');		
+			$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+			header('Location:'.$host.'403');
 			exit;				
 		}
 		if(isset($_POST['submit']))

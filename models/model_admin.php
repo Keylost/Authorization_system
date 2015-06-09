@@ -1,4 +1,4 @@
- <?php
+<?php
 require_once '/core/class_secure.php';
  class model_admin extends model
  {

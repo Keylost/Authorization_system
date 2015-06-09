@@ -44,7 +44,13 @@ static function check_rights($action)
 	$stmt->fetch();
     $stmt->close();
 	$mdl->db_disconnect();
-	return $access;	
+	if($access)
+			return $access;
+	else
+	{
+		$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
+		header('Location:'.$host.'403');
+	}
 }
 }
 ?>

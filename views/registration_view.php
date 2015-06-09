@@ -1,4 +1,7 @@
-<?php include '/views/fail_view.php'; ?>
+<?php 
+
+require '/views/fail_view.php'; 
+?>
 <form method="post" role="form" id="reg">
   <div class="form-group">
     <label for="login">Login:(min lenght: 3 symbols, max:20)</label>

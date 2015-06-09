@@ -11,8 +11,6 @@ class controller_session extends Controller
     public function __construct()
     {
 		include '/core/session.conf';
-		require_once '/core/view.php';
-		$this->view = new view();
 		$this->session_time = $session_time;
 		$this->nor_time= $no_remember_time;
         require_once '/core/model.php';
@@ -103,7 +101,7 @@ class controller_session extends Controller
 					$stmt2->bind_param('i',$user_id);
 					$stmt2->execute();
 					$stmt2->close();
-					setcookie('session_id', $series, $now-3600,'/'); //unset cookie
+					setcookie('session_id', $token, $now-3600,'/'); //unset cookie
 					setcookie('series_id', $series, $now-3600,'/'); //unset cookie
 				}
 			else
@@ -138,6 +136,8 @@ class controller_session extends Controller
 			$stmt->execute();
 			$stmt->close();
 		}
+		setcookie('session_id', '0', $now-3600,'/'); //unset cookie
+		setcookie('series_id', '0', $now-3600,'/'); //unset cookie
 	}
 	
 	public function forget_all($user_id)
@@ -150,6 +150,8 @@ class controller_session extends Controller
 			$stmt->execute();
 			$stmt->close();
 		}
+		setcookie('session_id', '0', $now-3600,'/'); //unset cookie
+		setcookie('series_id', '0', $now-3600,'/'); //unset cookie
 	}
  
     private function generate_token($user_id,$expire)

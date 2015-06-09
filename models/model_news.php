@@ -14,13 +14,13 @@ class model_news extends Model
         if ($stmt = $db_conn->prepare($sql)) 
 		{
 			$stmt->bind_param('sssi',$name,$short,$full,$id);
-			//echo $name.$short.$full.$id;
 			$result = $stmt->execute();
 			return $result;
 		}
 		else 
 		{
-			$this->err_msg="db query error";
+			$this->msg_type='error';
+			$this->msg="db query error";
 			return false;
 		}
 	}
@@ -38,7 +38,8 @@ class model_news extends Model
 		}
 		else 
 		{
-			$this->err_msg="db query error";
+			$this->msg_type='error';
+			$this->msg="db query error";
 			return false;
 		}
 	}
@@ -53,7 +54,8 @@ class model_news extends Model
 		}
 		else 
 		{
-			$this->err_msg="db query error";
+			$this->msg_type='error';
+			$this->msg="db query error";	
 			return false;
 		}
 		
@@ -67,11 +69,18 @@ class model_news extends Model
 		{
 			$stmt->bind_param('i', $id);
 			$stmt->execute();
+			$stmt->store_result();
+			if($stmt->num_rows!=1)
+			{
+				$this->msg_type='error';
+				$this->msg='Something is wrong) there is no any data';
+			}
 			return $stmt;
 		}
 		else 
 		{
-			$this->err_msg="db query error";
+			$this->msg_type='error';
+			$this->msg="db query error";
 			return false;
 		}
 	}
@@ -92,7 +101,8 @@ class model_news extends Model
 		}
 		else 
 		{
-			$this->err_msg="db query error";
+			$this->msg_type='error';
+			$this->msg="db query error";
 			return false;
 		}
 	}
@@ -116,7 +126,8 @@ class model_news extends Model
 		}
 		else 
 		{
-			$this->err_msg="db query error";
+			$this->msg_type='error';
+			$this->msg="db query error";
 			return false;
 		}
 	}

@@ -3,8 +3,12 @@ class Route
 {
     static function start()
     {
-        // контроллер и действие по умолчанию
-        $controller_name = 'news';
+        
+		require_once '/controllers/controller_session.php';
+		$session = new controller_session();
+		$session->start();
+		// контроллер и действие по умолчанию
+		$controller_name = 'news';
         $action_name = 'index';
         
         $routes = explode('/', $_SERVER['REQUEST_URI']);
@@ -69,9 +73,9 @@ class Route
     
     static function ErrorPage404()
     {
-        $host = 'http://'.$_SERVER['HTTP_HOST'].'/';
         header('HTTP/1.1 404 Not Found');
-        header("Status: 404 Not Found");
+		header("Status: 404 Not Found");
+		$host = 'http://'.$_SERVER['HTTP_HOST'].'/';
         header('Location:'.$host.'404');
     }
 }
