@@ -4,7 +4,7 @@ class Route
     static function start()
     {
         
-		require_once '/controllers/controller_session.php';
+		require_once '/controllers/session.php';
 		$session = new controller_session();
 		$session->start();
 		// контроллер и действие по умолчанию
